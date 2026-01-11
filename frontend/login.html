@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AcController - Login</title>
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="css/login.css">
+  <style>
+        /* === Reset & Base === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      height: 100%;
+      font-size: 16px;
+    }
+
+    body {
+      background: #1a2744;
+      color: #a0aec0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* === Container === */
+    .grid {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* === Login Card dengan Efek Timbul Keluar === */
+    .register {
+      background: #1a2744;
+      border-radius: 2rem;
+      padding: 4rem 2rem;
+      text-align: center;
+      /* Bayangan keluar untuk efek timbul/menonjol */
+      box-shadow: 
+        12px 12px 24px rgba(10, 22, 40, 0.8),
+        -12px -12px 24px rgba(30, 45, 77, 0.5),
+        12px 12px 24px rgba(10, 22, 40, 0.8),
+        -12px -12px 24px rgba(30, 45, 77, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .register:hover {
+      box-shadow: 
+        15px 15px 30px rgba(10, 22, 40, 0.9),
+        -15px -15px 30px rgba(30, 45, 77, 0.6),
+        15px 15px 30px rgba(10, 22, 40, 0.9),
+        -15px -15px 30px rgba(30, 45, 77, 0.6);
+    }
+
+    /* === Logo === */
+    .site__logo {
+      width: 56px;
+      height: 84px;
+      margin: 0 auto 2rem;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(140, 234, 187, 0.3));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* === Typography === */
+     h2 {
+      color: #ffffff;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      text-shadow: 
+        2px 2px 4px rgba(10, 22, 40, 0.8),
+        -1px -1px 2px rgba(30, 45, 77, 0.5);
+    }
+
+    /* === Form === */
+     .form {
+      margin-bottom: 2rem;
+    }
+
+    .form__field {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form__field:last-child {
+      margin-bottom: 0;
+      margin-top: 3rem;
+    }
+
+    /* === Password Toggle === */
+    .password-toggle {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #1a2744;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      border-radius: 50%;
+      box-shadow: 
+        3px 3px 6px rgba(10, 22, 40, 0.6),
+        -3px -3px 6px rgba(30, 45, 77, 0.3);
+    }
+
+    .password-toggle:active {
+      box-shadow: 
+        inset 2px 2px 4px rgba(10, 22, 40, 0.8),
+        inset -2px -2px 4px rgba(30, 45, 77, 0.4);
+    }
+
+    .password-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: #a0aec0;
+      transition: fill 0.2s ease;
+    }
+
+    .password-toggle:hover svg {
+      fill: #8ceabb;
+    }
+
+    /* === Input Fields dengan Cekungan === */
+    input {
+      border: none;
+      border-radius: 999px;
+      background: #1a2744;
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      padding: 1rem 1rem 1rem 3.5rem;
+      transition: all 0.3s ease;
+      width: 100%;
+      /* Efek cekungan pada input */
+      box-shadow: 
+        inset 4px 4px 8px rgba(10, 22, 40, 0.7),
+        inset -4px -4px 8px rgba(30, 45, 77, 0.3);
+    }
+
+    input::placeholder {
+      color: #a0aec0;
+      opacity: 0.7;
+    }
+
+    input[type="email"],
+    input[type="password"],
+    input[type="text"] {
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+      background-position: 1.25rem center;
+    }
+
+    input[type="email"] {
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%23a0aec0"><path d="M256.017 273.436l-205.17-170.029h410.904l-205.734 170.029zm-.034 55.462l-205.983-170.654v250.349h412v-249.94l-206.017 170.245z"/></svg>');
+    }
+
+    #password {
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+      background-position: 1.25rem center;
+      padding-right: 3.5rem;
+    }
+
+    #password[type="password"] {
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%23a0aec0"><path d="M195.334 223.333h-50v-62.666c0-61.022 49.645-110.667 110.666-110.667 61.022 0 110.667 49.645 110.667 110.667v62.666h-50v-62.666c0-33.452-27.215-60.667-60.667-60.667-33.451 0-60.666 27.215-60.666 60.667v62.666zm208.666 30v208.667h-296v-208.667h296zm-121 87.667c0-14.912-12.088-27-27-27s-27 12.088-27 27c0 7.811 3.317 14.844 8.619 19.773 4.385 4.075 6.881 9.8 6.881 15.785v22.942h23v-22.941c0-5.989 2.494-11.708 6.881-15.785 5.302-4.93 8.619-11.963 8.619-19.774z"/></svg>');
+    }
+
+    #password[type="text"] {
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="%23a0aec0"><path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/></svg>');
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    input[type="text"]:focus {
+      box-shadow: 
+        inset 5px 5px 10px rgba(10, 22, 40, 0.8),
+        inset -5px -5px 10px rgba(30, 45, 77, 0.4),
+        0 0 0 2px rgba(77, 184, 255, 0.3);
+    }
+
+    /* === Submit Button dengan Efek Timbul Keluar === */
+    input[type="submit"] {
+      background: linear-gradient(145deg, #4db8ff, #3a8fc4);
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      padding: 1rem 2rem;
+      text-transform: uppercase;
+      transition: all 0.2s ease;
+      width: 100%;
+      border-radius: 999px;
+      /* Efek timbul menonjol keluar */
+      box-shadow: 
+        8px 8px 16px rgba(10, 22, 40, 0.7),
+        -8px -8px 16px rgba(77, 184, 255, 0.3);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    input[type="submit"]:hover {
+      background: linear-gradient(145deg, #5dc3ff, #4a9dd4);
+      box-shadow: 
+        10px 10px 20px rgba(10, 22, 40, 0.8),
+        -10px -10px 20px rgba(77, 184, 255, 0.4);
+    }
+
+    input[type="submit"]:active {
+      /* Saat diklik - menjadi cekung masuk ke dalam */
+      box-shadow: 
+        inset 6px 6px 12px rgba(10, 22, 40, 0.8),
+        inset -6px -6px 12px rgba(77, 184, 255, 0.2);
+      transform: scale(0.98);
+    }
+
+    /* === Link === */
+    p {
+      color: #a0aec0;
+      font-size: 0.95rem;
+      margin-top: 2rem;
+    }
+
+    a {
+      color: #8ceabb;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #8ceabb, #378f7b);
+      transition: width 0.3s ease;
+    }
+
+    a:hover {
+      color: #378f7b;
+    }
+
+    a:hover::after {
+      width: 100%;
+    }
+
+    /* === Responsive Design === */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .register {
+        padding: 2.5rem 1.5rem;
+      }
+
+      input {
+        font-size: 0.95rem;
+        padding: 0.875rem 1rem 0.875rem 3rem;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        background-size: 1.1rem;
+        background-position: 1rem center;
+      }
+
+      .site__logo {
+        width: 48px;
+        height: 72px;
+      }
+
+      .form__field:last-child {
+        margin-top: 2rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .register {
+        padding: 2rem 1rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .site__logo {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* === Loading Animation === */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    input[type="submit"]:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <div class="register">
+
+      <svg xmlns="http://www.w3.org/2000/svg" class="site__logo" width="56" height="84" viewBox="77.7 214.9 274.7 412">
+        <defs>
+          <linearGradient id="a" x1="0%" y1="0%" y2="0%">
+            <stop offset="0%" stop-color="#8ceabb"/>
+            <stop offset="100%" stop-color="#378f7b"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#a)" d="M215 214.9c-83.6 123.5-137.3 200.8-137.3 275.9 0 75.2 61.4 136.1 137.3 136.1s137.3-60.9 137.3-136.1c0-75.1-53.7-152.4-137.3-275.9z"/>
+      </svg>
+
+      <h2>Login</h2>
+
+      <form action="" method="post" class="form">
+
+        <div class="form__field">
+          <input type="email" placeholder="info@mailaddress.com" required>
+        </div>
+
+        <div class="form__field">
+          <input type="password" id="password" placeholder="••••••••••••" required>
+          <button type="button" class="password-toggle" onclick="togglePassword()">
+            <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="form__field">
+          <input type="submit" value="Sign In">
+        </div>
+
+      </form>
+
+      <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const eyeIcon = document.getElementById('eye-icon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        // Icon mata tertutup (eye-off)
+        eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+      } else {
+        passwordInput.type = 'password';
+        // Icon mata terbuka (eye)
+        eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+      }
+    }
+  </script>
+
+</body>
+</html>
