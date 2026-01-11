@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT AC Controller</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+
+    </style>
+</head>
+<body>
+    <button class="hamburger" onclick="toggleMenu()">☰</button>
+    
+    <div class="overlay" onclick="toggleMenu()"></div>
+    
+    <aside class="sidebar">
+        <div class="logo">
+            IT <span class="ac">AC</span> CONTROLLER
+        </div>
+        
+        <nav class="nav-icons">
+            <div class="nav-icon chart-icon"></div>
+            <div class="nav-icon bell-icon"></div>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <h1 class="page-title">Home</h1>
+        
+        <div class="welcome-section">
+            <p class="welcome-text">Welcome to</p>
+            <h2 class="main-title">
+                <span class="it">IT</span> 
+                <span class="highlight">Air Conditioning</span> 
+                <span class="controller">Controller</span>
+            </h2>
+        </div>
+    </main>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.querySelector('.overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // Close menu when clicking on a nav item (mobile)
+        document.querySelectorAll('.nav-icon').forEach(icon => {
+            icon.addEventListener('click', () => {
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
