@@ -1,0 +1,308 @@
+    /* === Reset & Base === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      height: 100%;
+      font-size: 16px;
+    }
+
+    body {
+      background: linear-gradient(135deg, #0a1628 0%, #1a2744 100%);
+      color: #a0aec0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      min-height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    /* === Container === */
+    .grid {
+      width: 100%;
+      max-width: 440px;
+    }
+
+    /* === Login Card === */
+    .register {
+      background: #1a2744;
+      backdrop-filter: blur(10px);
+      border: 1px solid #3d4556;
+      border-radius: 1rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 40px #4db8ff;
+      padding: 4rem 2rem;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .register:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 60px #4db8ff;
+    }
+
+    /* === Logo === */
+    .site__logo {
+      width: 56px;
+      height: 84px;
+      margin: 0 auto 2rem;
+      display: block;
+      filter: drop-shadow(0 4px 12px rgba(140, 234, 187, 0.3));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* === Typography === */
+    h2 {
+      color: #ffffff;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+    }
+
+    /* === Form === */
+    .form {
+      margin-bottom: 2rem;
+    }
+
+    .form__field {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .form__field:last-child {
+      margin-bottom: 0;
+      margin-top: 3rem;
+    }
+
+    /* === Password Toggle === */
+    .password-toggle {
+      position: absolute;
+      right: 1.25rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s ease;
+      opacity: 0.6;
+    }
+
+    .password-toggle:hover {
+      opacity: 1;
+    }
+
+    .password-toggle svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      fill: #a0aec0;
+      transition: fill 0.2s ease;
+    }
+
+    .password-toggle:hover svg {
+      fill: #8ceabb;
+    }
+
+    /* Icon gembok (password) */
+#password {
+  background-repeat: no-repeat;
+  background-size: 1.25rem;
+  background-position: 1.25rem center;
+  padding-right: 3.5rem;
+}
+
+/* Password tersembunyi (lock) */
+#password[type="password"] {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%23a0aec0"><path d="M195.334 223.333h-50v-62.666c0-61.022 49.645-110.667 110.666-110.667 61.022 0 110.667 49.645 110.667 110.667v62.666h-50v-62.666c0-33.452-27.215-60.667-60.667-60.667-33.451 0-60.666 27.215-60.666 60.667v62.666zm208.666 30v208.667h-296v-208.667h296zm-121 87.667c0-14.912-12.088-27-27-27s-27 12.088-27 27c0 7.811 3.317 14.844 8.619 19.773 4.385 4.075 6.881 9.8 6.881 15.785v22.942h23v-22.941c0-5.989 2.494-11.708 6.881-15.785 5.302-4.93 8.619-11.963 8.619-19.774z"/></svg>');
+}
+
+/* Password terlihat (unlock) */
+#password[type="text"] {
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="%23a0aec0"><path d="M144 144v48H304V144c0-44.2-35.8-80-80-80s-80 35.8-80 80zM80 192V144C80 64.5 144.5 0 224 0s144 64.5 144 144v48h16c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V256c0-35.3 28.7-64 64-64H80z"/></svg>');
+}
+    /* === Input Fields === */
+    input {
+      border: 1px solid #3d4556;
+      border-radius: 999px;
+      background-color: rgba(45, 53, 72, 0.5);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 1rem;
+      outline: none;
+      padding: 1rem 1rem 1rem 3.5rem;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    input::placeholder {
+      color: #a0aec0;
+      opacity: 0.7;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      background-repeat: no-repeat;
+      background-size: 1.25rem;
+      background-position: 1.25rem center;
+    }
+
+    input[type="email"] {
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%23a0aec0"><path d="M256.017 273.436l-205.17-170.029h410.904l-205.734 170.029zm-.034 55.462l-205.983-170.654v250.349h412v-249.94l-206.017 170.245z"/></svg>');
+    }
+
+    input[type="password"],
+    input[type="text"]#password {
+      padding-right: 3.5rem;
+      transition: background-image 0.3s ease;
+    }
+
+    /* Gembok terbuka (saat password visible) */
+    input[type="text"]#password {
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%23a0aec0"><path d="M195.334 223.333h-50v-62.666c0-61.022 49.645-110.667 110.666-110.667 61.022 0 110.667 49.645 110.667 110.667v40h-50v-40c0-33.452-27.215-60.667-60.667-60.667-33.451 0-60.666 27.215-60.666 60.667v62.666zm208.666 30v208.667h-296v-208.667h296zm-121 87.667c0-14.912-12.088-27-27-27s-27 12.088-27 27c0 7.811 3.317 14.844 8.619 19.773 4.385 4.075 6.881 9.8 6.881 15.785v22.942h23v-22.941c0-5.989 2.494-11.708 6.881-15.785 5.302-4.93 8.619-11.963 8.619-19.774z"/></svg>');
+    }
+
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      background-color: rgba(45, 53, 72, 0.9);
+      border-color: #4db8ff;
+      box-shadow: 0 0 0 3px rgba(140, 193, 234, 0.1);
+      transform: translateY(-1px);
+    }
+
+    /* === Submit Button === */
+    input[type="submit"] {
+      background: linear-gradient(135deg, #4db8ff 0%, #37728f 100%);
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      padding: 1rem 2rem;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      width: 100%;
+      box-shadow: 0 4px 15px rgba(140, 234, 187, 0.3);
+    }
+
+    input[type="submit"]:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(140, 234, 187, 0.4);
+      filter: brightness(1.1);
+    }
+
+    input[type="submit"]:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(140, 234, 187, 0.3);
+    }
+
+    /* === Link === */
+    p {
+      color: #a0aec0;
+      font-size: 0.95rem;
+      margin-top: 2rem;
+    }
+
+    a {
+      color: #8ceabb;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, #8ceabb, #378f7b);
+      transition: width 0.3s ease;
+    }
+
+    a:hover {
+      color: #378f7b;
+    }
+
+    a:hover::after {
+      width: 100%;
+    }
+
+    /* === Responsive Design === */
+    @media (max-width: 480px) {
+      body {
+        padding: 1rem;
+      }
+
+      .register {
+        padding: 2.5rem 1.5rem;
+      }
+
+      input {
+        font-size: 0.95rem;
+        padding: 0.875rem 1rem 0.875rem 3rem;
+      }
+
+      input[type="email"],
+      input[type="password"] {
+        background-size: 1.1rem;
+        background-position: 1rem center;
+      }
+
+      .site__logo {
+        width: 48px;
+        height: 72px;
+      }
+
+      .form__field:last-child {
+        margin-top: 2rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .register {
+        padding: 2rem 1rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .site__logo {
+        margin-bottom: 1.5rem;
+      }
+    }
+
+    /* === Loading Animation === */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    input[type="submit"]:disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
