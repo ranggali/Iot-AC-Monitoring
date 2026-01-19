@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcController</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f1419;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a2332 0%, #2d3748 100%);
+            border-right: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        /* Header */
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            display: none;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #374151;
+            color: white;
+        }
+
+        /* Search Box */
+        .search-container {
+            padding: 16px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .search-container {
+            opacity: 0;
+            display: none;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 10px 12px 10px 40px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4A90E2;
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .search-box input::placeholder {
+            color: #64748b;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .nav-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .nav-menu::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 3px;
+        }
+
+        .menu-item {
+            margin-bottom: 8px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-link:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .menu-link.active {
+            background: #4A90E2;
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .menu-link-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-text {
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            display: none;
+        }
+
+        .menu-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-arrow {
+            display: none;
+        }
+
+        .menu-item.expanded .menu-arrow {
+            transform: rotate(180deg);
+        }
+
+        /* Submenu */
+        .submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            margin-left: 16px;
+            border-left: 2px solid #374151;
+            padding-left: 16px;
+            margin-top: 8px;
+        }
+
+        .menu-item.expanded .submenu {
+            max-height: 300px;
+        }
+
+        .sidebar.collapsed .submenu {
+            display: none;
+        }
+
+        .submenu-link {
+            display: block;
+            padding: 10px 16px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .submenu-link:hover {
+            background: rgba(55, 65, 81, 0.5);
+            color: white;
+        }
+
+        .submenu-link.active {
+            background: #374151;
+            color: white;
+        }
+
+        /* User Profile */
+        .user-profile {
+            padding: 16px;
+            border-top: 1px solid #374151;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background: #2d3848;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .profile-info {
+            flex: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .profile-info {
+            opacity: 0;
+            display: none;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .profile-role {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn:hover {
+            background: #374151;
+            color: #ef4444;
+        }
+
+        /* Collapsed state - hide avatar and normal logout, show special logout */
+        .sidebar.collapsed .profile-avatar {
+            display: none;
+        }
+
+        .sidebar.collapsed .logout-btn {
+            display: none;
+        }
+
+        .logout-btn-collapsed {
+            display: none;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logout-btn-collapsed:hover {
+            background: #374151;
+            color: #ef4444;
+        }
+
+        .sidebar.collapsed .logout-btn-collapsed {
+            display: flex;
+        }
+
+        .sidebar.collapsed .profile-container {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background: #0f1419;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .content-header {
+            max-width: 1200px;
+            margin: 0 auto 32px;
+        }
+
+        .content-header h2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .content-header p {
+            color: #94a3b8;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #4A90E2;
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A90E2;
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .card-link {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .card-link:hover {
+            color: #93c5fd;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            .mobile-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 998;
+                background: #1a2332;
+                border: 1px solid #374151;
+                color: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-toggle {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Header -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-text">
+                        <h1>IT <span style="color: #3b82f6;">AC</span> CONTROLLER</h1>
+                        <p>Dashboard</p>
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Search -->
+            <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search menu...">
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="nav-menu">
+                <div class="menu-item">
+                    <a class="menu-link active" onclick="setActive(this, 'Dashboard')">
+                        <div class="menu-link-content">
+                            <i class="fas fa-home menu-icon"></i>
+                            <span class="menu-text">Dashboard</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link" onclick="toggleSubmenu(this)">
+                        <div class="menu-link-content">
+                            <i class="fas fa-users menu-icon"></i>
+                            <span class="menu-text">Users</span>
+                        </div>
+                        <i class="fas fa-chevron-down menu-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <a class="submenu-link" onclick="setActive(this, 'User List')">User List</a>
+                        <a class="submenu-link" onclick="setActive(this, 'Add User')">Add User</a>
+                        <a class="submenu-link" onclick="setActive(this, 'Roles & Permissions')">Roles & Permissions</a>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link" onclick="toggleSubmenu(this)">
+                        <div class="menu-link-content">
+                            <i class="fas fa-file-alt menu-icon"></i>
+                            <span class="menu-text">Reports</span>
+                        </div>
+                        <i class="fas fa-chevron-down menu-arrow"></i>
+                    </a>
+                    <div class="submenu">
+                        <a class="submenu-link" onclick="setActive(this, 'Sales Report')">Sales Report</a>
+                        <a class="submenu-link" onclick="setActive(this, 'Analytics')">Analytics</a>
+                        <a class="submenu-link" onclick="setActive(this, 'Export Data')">Export Data</a>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link" onclick="setActive(this, 'Analytics')">
+                        <div class="menu-link-content">
+                            <i class="fas fa-chart-line menu-icon"></i>
+                            <span class="menu-text">Analytics</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link" onclick="setActive(this, 'Notifications')">
+                        <div class="menu-link-content">
+                            <i class="fas fa-bell menu-icon"></i>
+                            <span class="menu-text">Notifications</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="menu-item">
+                    <a class="menu-link" onclick="setActive(this, 'Settings')">
+                        <div class="menu-link-content">
+                            <i class="fas fa-cog menu-icon"></i>
+                            <span class="menu-text">Settings</span>
+                        </div>
+                    </a>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="profile-container">
+                    <div class="profile-avatar">JD</div>
+                    <div class="profile-info">
+                        <div class="profile-name">John Doe</div>
+                        <div class="profile-role">Administrator</div>
+                    </div>
+                    <button class="logout-btn" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                    <button class="logout-btn-collapsed" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-header">
+                <h2 id="pageTitle">Dashboard</h2>
+                <p>Welcome to your professional dashboard</p>
+            </div>
+
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Card Title 1</h3>
+                    <p>This is a sample content card demonstrating the layout and styling.</p>
+                    <a href="#" class="card-link">View Details →</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Card Title 2</h3>
+                    <p>This is a sample content card demonstrating the layout and styling.</p>
+                    <a href="#" class="card-link">View Details →</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h3>Card Title 3</h3>
+                    <p>This is a sample content card demonstrating the layout and styling.</p>
+                    <a href="#" class="card-link">View Details →</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-cog"></i>
+                    </div>
+                    <h3>Card Title 4</h3>
+                    <p>This is a sample content card demonstrating the layout and styling.</p>
+                    <a href="#" class="card-link">View Details →</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <h3>Card Title 5</h3>
+                    <p>This is a sample content card demonstrating the layout and styling.</p>
+                    <a href="#" class="card-link">View Details →</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Card Title 6</h3>
+                    <p>This is a sample content card demonstrating the layout and styling.</p>
+                    <a href="#" class="card-link">View Details →</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Toggle sidebar collapse
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Toggle submenu
+        function toggleSubmenu(element) {
+            const menuItem = element.parentElement;
+            const wasExpanded = menuItem.classList.contains('expanded');
+            
+            // Close all submenus
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('expanded');
+            });
+            
+            // Toggle current submenu
+            if (!wasExpanded) {
+                menuItem.classList.add('expanded');
+            }
+        }
+
+        // Set active menu item
+        function setActive(element, title) {
+            // Remove active class from all menu links
+            document.querySelectorAll('.menu-link, .submenu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Add active class to clicked element
+            element.classList.add('active');
+            
+            // Update page title
+            document.getElementById('pageTitle').textContent = title;
+        }
+
+        // Mobile sidebar toggle
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        }
+
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !mobileToggle.contains(event.target) &&
+                sidebar.classList.contains('mobile-open')) {
+                toggleMobileSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.mobile-overlay');
+            
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
