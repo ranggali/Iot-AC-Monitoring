@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Sidebar</title>
+    <title>AcController</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -97,6 +98,39 @@
         .sidebar.collapsed .search-container {
             opacity: 0;
             display: none;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 10px 12px 10px 40px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4A90E2;
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .search-box input::placeholder {
+            color: #64748b;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
         }
 
         /* Navigation Menu */
@@ -273,7 +307,53 @@
 
         .logout-btn:hover {
             background: #374151;
-            color: #ef4444;
+            color: #449fef;
+        }
+
+        /* Dashboard Search Bar */
+        .dashboard-search {
+            max-width: 1200px;
+            margin: 0 0 32px 0;
+        }
+
+        .dashboard-search-box {
+            position: relative;
+            max-width: 500px;
+        }
+
+        .dashboard-search-box input {
+            width: 100%;
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 12px 16px 12px 45px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-search-box input:focus {
+            outline: none;
+            border-color: #4A90E2;
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .dashboard-search-box input::placeholder {
+            color: #64748b;
+        }
+
+        .dashboard-search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-search-box {
+                max-width: 100%;
+            }
         }
 
         /* Collapsed state - hide avatar and normal logout, show special logout */
@@ -302,7 +382,7 @@
 
         .logout-btn-collapsed:hover {
             background: #374151;
-            color: #ef4444;
+            color: #449fef;
         }
 
         .sidebar.collapsed .logout-btn-collapsed {
@@ -324,24 +404,29 @@
 
         .content-header {
             max-width: 1200px;
-            margin: 0 auto 32px;
+            margin: 0 0 32px 0;
         }
 
-        .content-header h2 {
+        .content-header-acunit {
+            max-width: 1200px;
+            margin: 0 0 32px 0;
+        }
+
+        .content-header h2, .content-header-acunit h2 {
             font-size: 32px;
             font-weight: bold;
             color: white;
             margin-bottom: 8px;
         }
 
-        .content-header p {
+        .content-header p, .content-header-acunit p {
             color: #94a3b8;
         }
 
         /* Cards Grid */
         .cards-grid {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 1600px;
+            margin: 0 0 32px 0;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 24px;
@@ -371,6 +456,7 @@
             justify-content: center;
             color: #4A90E2;
             margin-bottom: 16px;
+            font-size: 25px;
         }
 
         .card h3 {
@@ -780,6 +866,232 @@
         .toggle-switch.active .toggle-slider {
             transform: translateX(24px);
         }
+
+        /* AC Units Page Styles */
+        .page-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .search-input {
+            flex: 1;
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4A90E2;
+        }
+
+        .btn-add {
+            background: #4A90E2;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add:hover {
+            background: #3b7bc7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        /* Table Styles */
+        .table-container {
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background: #2d3748;
+        }
+
+        .data-table th {
+            padding: 16px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .data-table td {
+            padding: 16px;
+            color: white;
+            font-size: 14px;
+            border-bottom: 1px solid #374151;
+        }
+
+        .data-table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background: rgba(74, 144, 226, 0.2);
+            color: #4A90E2;
+        }
+
+        .btn-view:hover {
+            background: #4A90E2;
+            color: white;
+        }
+
+        .btn-edit {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .btn-edit:hover {
+            background: #fbbf24;
+            color: white;
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .table-empty {
+            text-align: center;
+            padding: 48px 16px;
+            color: #64748b;
+        }
+
+        .table-empty i {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.3;
+        }
+
+        /* Form Modal Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .form-input {
+            width: 100%;
+            background: #2d3748;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #4A90E2;
+        }
+
+        .form-select {
+            width: 100%;
+            background: #2d3748;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: #4A90E2;
+        }
+
+        @media (max-width: 768px) {
+            .page-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filter {
+                max-width: 100%;
+            }
+
+            .table-wrapper {
+                overflow-x: scroll;
+            }
+
+            .data-table {
+                min-width: 600px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -808,58 +1120,19 @@
             <!-- Navigation Menu -->
             <nav class="nav-menu">
                 <div class="menu-item">
-                    <a class="menu-link active" onclick="setActive(this, 'Dashboard')">
+                    <a class="menu-link active" onclick="setActive(this, 'Home')">
                         <div class="menu-link-content">
                             <i class="fas fa-home menu-icon"></i>
-                            <span class="menu-text">Dashboard</span>
+                            <span class="menu-text">Home</span>
                         </div>
                     </a>
                 </div>
 
                 <div class="menu-item">
-                    <a class="menu-link" onclick="toggleSubmenu(this)">
+                    <a class="menu-link" onclick="setActive(this, 'AC Units')">
                         <div class="menu-link-content">
-                            <i class="fas fa-users menu-icon"></i>
-                            <span class="menu-text">Users</span>
-                        </div>
-                        <i class="fas fa-chevron-down menu-arrow"></i>
-                    </a>
-                    <div class="submenu">
-                        <a class="submenu-link" onclick="setActive(this, 'User List')">User List</a>
-                        <a class="submenu-link" onclick="setActive(this, 'Add User')">Add User</a>
-                        <a class="submenu-link" onclick="setActive(this, 'Roles & Permissions')">Roles & Permissions</a>
-                    </div>
-                </div>
-
-                <div class="menu-item">
-                    <a class="menu-link" onclick="toggleSubmenu(this)">
-                        <div class="menu-link-content">
-                            <i class="fas fa-file-alt menu-icon"></i>
-                            <span class="menu-text">Reports</span>
-                        </div>
-                        <i class="fas fa-chevron-down menu-arrow"></i>
-                    </a>
-                    <div class="submenu">
-                        <a class="submenu-link" onclick="setActive(this, 'Sales Report')">Sales Report</a>
-                        <a class="submenu-link" onclick="setActive(this, 'Analytics')">Analytics</a>
-                        <a class="submenu-link" onclick="setActive(this, 'Export Data')">Export Data</a>
-                    </div>
-                </div>
-
-                <div class="menu-item">
-                    <a class="menu-link" onclick="setActive(this, 'Analytics')">
-                        <div class="menu-link-content">
-                            <i class="fas fa-chart-line menu-icon"></i>
-                            <span class="menu-text">Analytics</span>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="menu-item">
-                    <a class="menu-link" onclick="setActive(this, 'Notifications')">
-                        <div class="menu-link-content">
-                            <i class="fas fa-bell menu-icon"></i>
-                            <span class="menu-text">Notifications</span>
+                            <i class='bx  bx-air-conditioner'></i> 
+                            <span class="menu-text">AC Units</span>
                         </div>
                     </a>
                 </div>
@@ -878,13 +1151,13 @@
             <div class="user-profile">
                 <div class="profile-container">
                     <div class="profile-info">
-                        <div class="profile-name">John Doe</div>
+                        <div class="profile-name">Admin 123</div>
                         <div class="profile-role">Administrator</div>
                     </div>
-                    <button class="logout-btn" title="Logout">
+                    <button class="logout-btn" title="Logout" onclick="window.location.href='login.html'">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
-                    <button class="logout-btn-collapsed" title="Logout">
+                    <button class="logout-btn-collapsed" title="Logout" onclick="window.location.href='login.html'">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
                 </div>
@@ -892,65 +1165,214 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="main-content">
-            <div class="content-header">
-                <h2 id="pageTitle">Dashboard</h2>
-                <p>Welcome to your professional dashboard</p>
+        <main class="main-content" id="mainContent">
+            <!-- Home Page -->
+            <div id="homePage" class="page-content">
+                <div class="content-header">
+                    <h2>Home</h2>
+                    <p>Welcome to your AC control dashboard</p>
+                </div>
+
+                <!-- search dashboard -->
+                <div class="dashboard-search">
+                    <div class="dashboard-search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search AC units by name or location..." id="dashboardSearch" onkeyup="searchDashboard()">
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 001</h3>
+                        <p>Meeting Room • Active • 22°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 001', 'Meeting Room', 22, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 002</h3>
+                        <p>Server Room • Active • 20°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 002', 'Server Room', 20, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 003</h3>
+                        <p>Office Floor 2 • Inactive • 24°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 003', 'Office Floor 2', 24, false)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 004</h3>
+                        <p>CEO Room • Active • 23°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 004', 'CEO Room', 23, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 005</h3>
+                        <p>Guest Room • Active • 25°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 005', 'Guest Room', 25, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 006</h3>
+                        <p>Training Room • Inactive • 26°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 006', 'Training Room', 26, false)">View Details →</a>
+                    </div>
+                </div>
             </div>
 
-            <div class="cards-grid">
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-snowflake"></i>
-                    </div>
-                    <h3>Card Title 1</h3>
-                    <p>This is a sample content card demonstrating the layout and styling.</p>
-                    <a href="#" class="card-link" onclick="openModal(event, 'AC Unit 1', 'Meeting Room A', 22, true)">View Details →</a>
+            <!-- AC Units Page -->
+            <div id="acUnitsPage" class="page-content" style="display: none;">
+                <div class="content-header-acunit">
+                    <h2>AC Units</h2>
+                    <p>Manage all your AC units</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-users"></i>
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <input type="text" class="search-input" placeholder="Search AC units..." id="searchInput" onkeyup="searchTable()">
                     </div>
-                    <h3>Card Title 2</h3>
-                    <p>This is a sample content card demonstrating the layout and styling.</p>
-                    <a href="#" class="card-link">View Details →</a>
+                    <button class="btn-add" onclick="openAddModal()">
+                        <i class="fas fa-plus"></i>
+                        Add New AC
+                    </button>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-file-alt"></i>
+                <div class="table-container">
+                    <div class="table-wrapper">
+                        <table class="data-table" id="acTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Temperature</th>
+                                    <th>Status</th>
+                                    <th>Mode</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="acTableBody">
+                                <tr>
+                                    <td>AC 001</td>
+                                    <td>Meeting Room AC</td>
+                                    <td>Meeting Room A</td>
+                                    <td>22°C</td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td>Cool</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon btn-view" onclick="openModal(event, 'AC 001', 'Meeting Room A', 22, true)" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-edit" onclick="openEditModal('AC 001', 'Meeting Room AC', 'Meeting Room A')" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-delete" onclick="deleteACUnit('AC 001')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>AC 002</td>
+                                    <td>Server Room AC</td>
+                                    <td>Server Room</td>
+                                    <td>20°C</td>
+                                    <td><span class="status-badge active">Active</span></td>
+                                    <td>Cool</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon btn-view" onclick="openModal(event, 'AC 002', 'Server Room', 20, true)" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-edit" onclick="openEditModal('AC 002', 'Server Room AC', 'Server Room')" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-delete" onclick="deleteACUnit('AC 002')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>AC 003</td>
+                                    <td>Office AC</td>
+                                    <td>Office Floor 2</td>
+                                    <td>24°C</td>
+                                    <td><span class="status-badge inactive">Inactive</span></td>
+                                    <td>Off</td>
+                                    <td>
+                                        <div class="table-actions">
+                                            <button class="btn-icon btn-view" onclick="openModal(event, 'AC 003', 'Office Floor 2', 24, false)" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn-icon btn-edit" onclick="openEditModal('AC 003', 'Office AC', 'Office Floor 2')" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <button class="btn-icon btn-delete" onclick="deleteACUnit('AC 003')" title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <h3>Card Title 3</h3>
-                    <p>This is a sample content card demonstrating the layout and styling.</p>
-                    <a href="#" class="card-link">View Details →</a>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div id="settingsPage" class="page-content" style="display: none;">
+                <div class="content-header">
+                    <h2>Settings</h2>
+                    <p>Manage your account settings</p>
                 </div>
 
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-cog"></i>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h3>Profile Settings</h3>
+                        <p>Update your profile information and preferences</p>
+                        <a href="#" class="card-link">Coming Soon →</a>
                     </div>
-                    <h3>Card Title 4</h3>
-                    <p>This is a sample content card demonstrating the layout and styling.</p>
-                    <a href="#" class="card-link">View Details →</a>
-                </div>
 
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-bell"></i>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <h3>Change Password</h3>
+                        <p>Update your password to keep your account secure</p>
+                        <a href="#" class="card-link">Coming Soon →</a>
                     </div>
-                    <h3>Card Title 5</h3>
-                    <p>This is a sample content card demonstrating the layout and styling.</p>
-                    <a href="#" class="card-link">View Details →</a>
-                </div>
 
-                <div class="card">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-line"></i>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Notifications</h3>
+                        <p>Manage your notification preferences</p>
+                        <a href="#" class="card-link">Coming Soon →</a>
                     </div>
-                    <h3>Card Title 6</h3>
-                    <p>This is a sample content card demonstrating the layout and styling.</p>
-                    <a href="#" class="card-link">View Details →</a>
                 </div>
             </div>
         </main>
@@ -962,7 +1384,7 @@
             <div class="modal-header">
                 <h2>
                     <div class="modal-header-icon">
-                        <i class="fas fa-snowflake"></i>
+                        <i class='bx  bx-air-conditioner'></i> 
                     </div>
                     <span id="modalTitle">AC Details</span>
                 </h2>
@@ -1049,14 +1471,71 @@
             </div>
 
             <div class="modal-actions">
-                <button class="btn btn-danger" onclick="deleteAC()">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
                 <button class="btn btn-secondary" onclick="closeModal()">
-                    Cancel
+                    Close
                 </button>
                 <button class="btn btn-primary" onclick="saveChanges()">
                     <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Add/Edit AC -->
+    <div class="modal-overlay" id="formModal" onclick="closeFormModalOnOverlay(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>
+                    <div class="modal-header-icon">
+                        <i class="fas fa-snowflake"></i>
+                    </div>
+                    <span id="formModalTitle">Add New AC Unit</span>
+                </h2>
+                <button class="modal-close" onclick="closeFormModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form id="acForm">
+                    <div class="form-group">
+                        <label class="form-label">AC ID</label>
+                        <input type="text" class="form-input" id="acId" placeholder="e.g., AC 007" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">AC Name</label>
+                        <input type="text" class="form-input" id="acName" placeholder="e.g., Conference Room AC" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-input" id="acLocation" placeholder="e.g., Conference Room B" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Default Temperature (°C)</label>
+                        <input type="number" class="form-input" id="acTemp" min="16" max="30" value="24">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Default Mode</label>
+                        <select class="form-select" id="acMode">
+                            <option value="cool">Cool</option>
+                            <option value="fan">Fan</option>
+                            <option value="dry">Dry</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeFormModal()">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" onclick="submitACForm()">
+                    <i class="fas fa-save"></i> <span id="formSubmitText">Add AC Unit</span>
                 </button>
             </div>
         </div>
@@ -1067,6 +1546,7 @@
         let currentTemp = 22;
         let isPowerOn = true;
         let currentMode = 'cool';
+        let isEditMode = false;
 
         // Toggle sidebar collapse
         function toggleSidebar() {
@@ -1090,8 +1570,8 @@
             }
         }
 
-        // Set active menu item
-        function setActive(element, title) {
+        // Set active menu item and show page
+        function setActive(element, page) {
             // Remove active class from all menu links
             document.querySelectorAll('.menu-link, .submenu-link').forEach(link => {
                 link.classList.remove('active');
@@ -1100,8 +1580,19 @@
             // Add active class to clicked element
             element.classList.add('active');
             
-            // Update page title
-            document.getElementById('pageTitle').textContent = title;
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(pageContent => {
+                pageContent.style.display = 'none';
+            });
+            
+            // Show selected page
+            if (page === 'Home') {
+                document.getElementById('homePage').style.display = 'block';
+            } else if (page === 'AC Units') {
+                document.getElementById('acUnitsPage').style.display = 'block';
+            } else if (page === 'Settings') {
+                document.getElementById('settingsPage').style.display = 'block';
+            }
         }
 
         // Mobile sidebar toggle
@@ -1154,10 +1645,14 @@
                 statusBadge.textContent = 'Active';
                 statusBadge.classList.remove('inactive');
                 statusBadge.classList.add('active');
+                document.getElementById('powerToggle').classList.add('active');
+                isPowerOn = true;
             } else {
                 statusBadge.textContent = 'Inactive';
                 statusBadge.classList.remove('active');
                 statusBadge.classList.add('inactive');
+                document.getElementById('powerToggle').classList.remove('active');
+                isPowerOn = false;
             }
             
             modal.classList.add('active');
@@ -1226,20 +1721,119 @@
             closeModal();
         }
 
-        // Delete AC
-        function deleteAC() {
-            if (confirm('Are you sure you want to delete this AC unit?')) {
-                alert('AC unit deleted successfully!');
-                closeModal();
-            }
-        }
-
         // Close modal with Escape key
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {
                 closeModal();
+                closeFormModal();
             }
         });
+
+        // Search table function
+        function searchTable() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const table = document.getElementById('acTable');
+            const tr = table.getElementsByTagName('tr');
+
+            for (let i = 1; i < tr.length; i++) {
+                let found = false;
+                const td = tr[i].getElementsByTagName('td');
+                
+                for (let j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        const txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                
+                tr[i].style.display = found ? '' : 'none';
+            }
+        }
+
+        // CRUD Functions
+        function openAddModal() {
+            isEditMode = false;
+            document.getElementById('formModalTitle').textContent = 'Add New AC Unit';
+            document.getElementById('formSubmitText').textContent = 'Add AC Unit';
+            document.getElementById('acForm').reset();
+            document.getElementById('acId').disabled = false;
+            document.getElementById('formModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function openEditModal(id, name, location) {
+            isEditMode = true;
+            document.getElementById('formModalTitle').textContent = 'Edit AC Unit';
+            document.getElementById('formSubmitText').textContent = 'Update AC Unit';
+            document.getElementById('acId').value = id;
+            document.getElementById('acId').disabled = true;
+            document.getElementById('acName').value = name;
+            document.getElementById('acLocation').value = location;
+            document.getElementById('formModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeFormModal() {
+            document.getElementById('formModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeFormModalOnOverlay(event) {
+            if (event.target.id === 'formModal') {
+                closeFormModal();
+            }
+        }
+
+        function submitACForm() {
+            const id = document.getElementById('acId').value;
+            const name = document.getElementById('acName').value;
+            const location = document.getElementById('acLocation').value;
+            const temp = document.getElementById('acTemp').value;
+            const mode = document.getElementById('acMode').value;
+
+            if (!id || !name || !location) {
+                alert('Please fill all required fields!');
+                return;
+            }
+
+            if (isEditMode) {
+                alert('AC Unit updated!\nID: ' + id + '\nName: ' + name + '\nLocation: ' + location);
+            } else {
+                alert('AC Unit added!\nID: ' + id + '\nName: ' + name + '\nLocation: ' + location);
+                // Here you would add the new row to the table
+            }
+
+            closeFormModal();
+        }
+
+        function deleteACUnit(id) {
+            if (confirm('Are you sure you want to delete ' + id + '?')) {
+                alert('AC Unit ' + id + ' has been deleted!');
+                // Here you would remove the row from the table
+            }
+        }
+
+        // Dashboard search function
+        function searchDashboard() {
+            const input = document.getElementById('dashboardSearch');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('#homePage .card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.indexOf(filter) > -1 || description.indexOf(filter) > -1) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
     </script>
 </body>
 </html>
