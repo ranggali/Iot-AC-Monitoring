@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AcController</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.boxicons.com/3.0.8/fonts/basic/boxicons.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f1419;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(180deg, #1a2332 0%, #2d3748 100%);
+            border-right: 1px solid #374151;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .sidebar.collapsed {
+            width: 80px;
+        }
+
+        /* Header */
+        .sidebar-header {
+            padding: 24px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .logo-text {
+            opacity: 0;
+            display: none;
+        }
+
+        .logo-text h1 {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .logo-text p {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .toggle-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background: #374151;
+            color: white;
+        }
+
+        /* Search Box */
+
+        .sidebar.collapsed .search-container {
+            opacity: 0;
+            display: none;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: rgba(51, 65, 85, 0.5);
+            border: 1px solid #475569;
+            border-radius: 8px;
+            padding: 10px 12px 10px 40px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #4A90E2;
+            background: rgba(51, 65, 85, 0.8);
+        }
+
+        .search-box input::placeholder {
+            color: #64748b;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        /* Navigation Menu */
+        .nav-menu {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-menu::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .nav-menu::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .nav-menu::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 3px;
+        }
+
+         .menu-items-top {
+            flex: 0;
+        }
+
+        .menu-items-bottom {
+            margin-top: auto;
+        }
+
+        .menu-item {
+            margin-bottom: 8px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .menu-link:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .menu-link.active {
+            background: #4A90E2;
+            color: white;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .menu-link-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu-icon {
+            width: 20px;
+            text-align: center;
+        }
+
+        .menu-text {
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .menu-text {
+            opacity: 0;
+            display: none;
+        }
+
+        .sidebar.collapsed .menu-arrow {
+            display: none;
+        }
+
+        /* User Profile */
+        .user-profile {
+            padding: 16px;
+            border-top: 1px solid #374151;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: 8px;
+            background: #2d3848;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-info {
+            flex: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar.collapsed .profile-info {
+            opacity: 0;
+            display: none;
+        }
+
+        .profile-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .profile-role {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn:hover {
+            background: #374151;
+            color: #449fef;
+        }
+
+        /* Dashboard Search Bar */
+        .dashboard-search {
+            max-width: 1200px;
+            margin: 0 0 32px 0;
+        }
+
+        .dashboard-search-box {
+            position: relative;
+            max-width: 500px;
+        }
+
+        .dashboard-search-box input {
+            width: 100%;
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 12px 16px 12px 45px;
+            color: white;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-search-box input:focus {
+            outline: none;
+            border-color: #4A90E2;
+            background: rgba(74, 144, 226, 0.05);
+        }
+
+        .dashboard-search-box input::placeholder {
+            color: #64748b;
+        }
+
+        .dashboard-search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-search-box {
+                max-width: 100%;
+            }
+        }
+
+        /* Collapsed state - hide avatar and normal logout, show special logout */
+        .sidebar.collapsed .profile-avatar {
+            display: none;
+        }
+
+        .sidebar.collapsed .logout-btn {
+            display: none;
+        }
+
+        .logout-btn-collapsed {
+            display: none;
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .logout-btn-collapsed:hover {
+            background: #374151;
+            color: #449fef;
+        }
+
+        .sidebar.collapsed .logout-btn-collapsed {
+            display: flex;
+        }
+
+        .sidebar.collapsed .profile-container {
+            justify-content: center;
+            padding: 12px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background: #0f1419;
+            overflow-y: auto;
+            padding: 32px;
+        }
+
+        .content-header {
+            max-width: 1200px;
+            margin: 0 0 32px 0;
+        }
+
+        .content-header-acunit {
+            max-width: 1200px;
+            margin: 0 0 32px 0;
+        }
+
+        .content-header h2, .content-header-acunit h2 {
+            font-size: 32px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .content-header p, .content-header-acunit p {
+            color: #94a3b8;
+        }
+
+        /* Home Cards Grid */
+        .cards-grid {
+            max-width: 1600px;
+            margin: 0 0 32px 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: #4A90E2;
+            box-shadow: 0 8px 24px rgba(74, 144, 226, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A90E2;
+            margin-bottom: 16px;
+            font-size: 25px;
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #94a3b8;
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .card-link {
+            color: #60a5fa;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .card-link:hover {
+            color: #93c5fd;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 1000;
+                transform: translateX(-100%);
+            }
+
+            .sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .mobile-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+            }
+
+            .mobile-overlay.active {
+                display: block;
+            }
+
+            .mobile-toggle {
+                display: block;
+                position: fixed;
+                top: 20px;
+                left: 20px;
+                z-index: 998;
+                background: #1a2332;
+                border: 1px solid #374151;
+                color: white;
+                padding: 12px 16px;
+                border-radius: 8px;
+                cursor: pointer;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-toggle {
+                display: none;
+            }
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: #1a2332;
+            border: 1px solid #374151;
+            border-radius: 16px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-content::-webkit-scrollbar-track {
+            background: #1a2332;
+        }
+
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #374151;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-header-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(74, 144, 226, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A90E2;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 20px;
+        }
+
+        .modal-close:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: #2d3748;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .detail-value {
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+        }
+
+        .status-badge.inactive {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+        }
+
+        /* Detail Modal Specific Styles */
+        .modal-content.detail-view .modal-header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d3748 100%);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #2d3748 0%, #1a2332 100%);
+            border: 1px solid #374151;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .info-card:hover {
+            border-color: #4A90E2;
+            transform: translateY(-2px);
+        }
+
+        .info-card-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(74, 144, 226, 0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #4A90E2;
+            margin-bottom: 12px;
+            font-size: 20px;
+        }
+
+        .info-card-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+        }
+
+        .info-card-subtext {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .temperature-card {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(74, 144, 226, 0.05) 100%);
+        }
+
+        .temperature-card .info-card-value {
+            font-size: 56px;
+            color: #4A90E2;
+            margin: 16px 0;
+        }
+
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.inactive {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+            }
+            50% {
+                opacity: 0.8;
+                box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+            }
+        }
+
+        .detail-timeline {
+            position: relative;
+            padding-left: 32px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 24px;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 8px;
+            width: 12px;
+            height: 12px;
+            background: #4A90E2;
+            border-radius: 50%;
+            border: 3px solid #1a2332;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -21px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% - 8px);
+            background: #374151;
+        }
+
+        .timeline-item:last-child::after {
+            display: none;
+        }
+
+        .timeline-label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+        }
+
+        .timeline-value {
+            font-size: 15px;
+            color: white;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .temperature-card {
+                grid-column: 1;
+            }
+        }
+
+        /* Action Buttons */
+        .modal-actions {
+            padding: 24px;
+            border-top: 1px solid #374151;
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: #4A90E2;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3b7bc7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid #374151;
+        }
+
+        .btn-secondary:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ef4444;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <button class="mobile-toggle" onclick="toggleMobileSidebar()">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Header -->
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-text">
+                        <h1>IT <span style="color: #3b82f6;">AC</span> CONTROLLER</h1>
+                        <p>Dashboard</p>
+                    </div>
+                </div>
+                <button class="toggle-btn" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="nav-menu">
+                <!-- Menu Items Top -->
+                <div class="menu-items-top">
+                    <div class="menu-item">
+                        <a class="menu-link active">
+                            <div class="menu-link-content">
+                                <i class="fas fa-home menu-icon"></i>
+                                <span class="menu-text">Home</span>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="menu-item">
+                        <a class="menu-link" href="acunit.html">
+                            <div class="menu-link-content">
+                                <i class='bx bx-air-conditioner'></i> 
+                                <span class="menu-text">AC Units</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Menu Items Bottom -->
+                <div class="menu-items-bottom">
+                    <div class="menu-item">
+                        <a class="menu-link" href="setting.html">
+                            <div class="menu-link-content">
+                                <i class="fas fa-cog menu-icon"></i>
+                                <span class="menu-text">Settings</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="profile-container">
+                    <div class="profile-info">
+                        <div class="profile-name">Admin 123</div>
+                        <div class="profile-role">Administrator</div>
+                    </div>
+                    <button class="logout-btn" title="Logout" onclick="window.location.href='login.html'">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                    <button class="logout-btn-collapsed" title="Logout" onclick="window.location.href='login.html'">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="mainContent">
+            <!-- Home Page -->
+            <div id="homePage" class="page-content">
+                <div class="content-header">
+                    <h2>Home</h2>
+                    <p>Welcome to your AC control dashboard</p>
+                </div>
+
+                <!-- search dashboard -->
+                <div class="dashboard-search">
+                    <div class="dashboard-search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search AC units by name or location..." id="dashboardSearch" onkeyup="searchDashboard()">
+                    </div>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 001</h3>
+                        <p>Meeting Room • Active • 22°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 001', 'Meeting Room', 22, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 002</h3>
+                        <p>Server Room • Active • 20°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 002', 'Server Room', 20, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 003</h3>
+                        <p>Office Floor 2 • Inactive • 24°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 003', 'Office Floor 2', 24, false)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 004</h3>
+                        <p>CEO Room • Active • 23°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 004', 'CEO Room', 23, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 005</h3>
+                        <p>Guest Room • Active • 25°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 005', 'Guest Room', 25, true)">View Details →</a>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class='bx  bx-air-conditioner'></i> 
+                        </div>
+                        <h3>AC 006</h3>
+                        <p>Training Room • Inactive • 26°C</p>
+                        <a href="#" class="card-link" onclick="openModal(event, 'AC 006', 'Training Room', 26, false)">View Details →</a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Modal Detail AC -->
+    <div class="modal-overlay" id="acModal" onclick="closeModalOnOverlay(event)">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>
+                    <div class="modal-header-icon">
+                        <i class='bx  bx-air-conditioner'></i> 
+                    </div>
+                    <span id="modalTitle">AC Details</span>
+                </h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body">
+    <!-- Info Cards Grid -->
+    <div class="info-grid">
+        <!-- Temperature Card -->
+        <div class="info-card temperature-card">
+            <div class="info-card-icon">
+                <i class="fas fa-thermometer-half"></i>
+            </div>
+            <div class="info-card-label">Current Temperature</div>
+            <div class="info-card-value" id="tempDisplay">22°C</div>
+            <div class="info-card-subtext">Set to Cool Mode</div>
+        </div>
+
+        <!-- Status Card -->
+        <div class="info-card">
+            <div class="info-card-icon">
+                <i class="fas fa-power-off"></i>
+            </div>
+            <div class="info-card-label">Status</div>
+            <div class="info-card-value">
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="modalStatus" style="font-size: 18px;">Active</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Location Card -->
+        <div class="info-card">
+            <div class="info-card-icon">
+                <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="info-card-label">Location</div>
+            <div class="info-card-value" id="modalLocation" style="font-size: 18px;">-</div>
+        </div>
+
+        <!-- Energy Usage Card -->
+        <div class="info-card">
+            <div class="info-card-icon">
+                <i class="fas fa-bolt"></i>
+            </div>
+            <div class="info-card-label">Energy Usage</div>
+            <div class="info-card-value">8.5</div>
+            <div class="info-card-subtext">kWh today</div>
+        </div>
+
+        <!-- Running Time Card -->
+        <div class="info-card">
+            <div class="info-card-icon">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="info-card-label">Running Time</div>
+            <div class="info-card-value" style="font-size: 20px;">6h 32m</div>
+            <div class="info-card-subtext">Today</div>
+        </div>
+    </div>
+
+    <!-- Activity Timeline -->
+    <div class="detail-section">
+        <div class="section-title">Recent Activity</div>
+        <div class="detail-timeline">
+            <div class="timeline-item">
+                <div class="timeline-label">Last Mode Change</div>
+                <div class="timeline-value">Cool Mode - 2 hours ago</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-label">Temperature Adjusted</div>
+                <div class="timeline-value">22°C - 3 hours ago</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-label">Last Maintenance</div>
+                <div class="timeline-value">15 Dec 2024</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Temperature variable
+        let currentTemp = 22;
+        let isPowerOn = true;
+
+        // Toggle sidebar collapse
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('collapsed');
+        }
+
+        // Mobile sidebar toggle
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        }
+
+        // Close mobile sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.querySelector('.mobile-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !mobileToggle.contains(event.target) &&
+                sidebar.classList.contains('mobile-open')) {
+                toggleMobileSidebar();
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.querySelector('.mobile-overlay');
+            
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('mobile-open');
+                overlay.classList.remove('active');
+            }
+        });
+
+        // Modal Functions
+        function openModal(event, title, location, temp, status) {
+            event.preventDefault();
+            const modal = document.getElementById('acModal');
+            const modalContent = modal.querySelector('.modal-content');
+            
+            // Add detail-view class
+            modalContent.classList.add('detail-view');
+            
+            // Set modal data
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalLocation').textContent = location;
+            currentTemp = temp;
+            document.getElementById('tempDisplay').textContent = temp + '°C';
+            
+            // Set status
+            const statusText = document.getElementById('modalStatus');
+            const statusDot = document.getElementById('statusDot');
+            
+            if (status) {
+                statusText.textContent = 'Active';
+                statusDot.classList.remove('inactive');
+            } else {
+                statusText.textContent = 'Inactive';
+                statusDot.classList.add('inactive');
+            }
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('acModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target.id === 'acModal') {
+                closeModal();
+            }
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Dashboard search function
+        function searchDashboard() {
+            const input = document.getElementById('dashboardSearch');
+            const filter = input.value.toLowerCase();
+            const cards = document.querySelectorAll('#homePage .card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const description = card.querySelector('p').textContent.toLowerCase();
+                
+                if (title.indexOf(filter) > -1 || description.indexOf(filter) > -1) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
