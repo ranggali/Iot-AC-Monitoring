@@ -32,7 +32,7 @@
                 <div class="logo-container">
                     <div class="logo-text">
                         <h1>IT <span style="color: #3b82f6;">AC</span> CONTROLLER</h1>
-                        <p>Dashboard</p>
+                        <p>Dashboard IOT AC MONITORING</p>
                     </div>
                 </div>
                 <button class="toggle-btn" onclick="toggleSidebar()">
