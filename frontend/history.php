@@ -83,7 +83,7 @@
                         <a class="menu-link active">
                             <div class="menu-link-content">
                                 <i class="fas fa-clock-rotate-left"></i>
-                                <span class="menu-text">History</span>
+                                <span class="menu-text">Historyyy</span>
                             </div>
                         </a>
                     </div>
