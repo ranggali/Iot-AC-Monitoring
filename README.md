@@ -1,4 +1,4 @@
-# Tugas-Akhir
+# Tugas-Akhir IoT AC Monitoring
 # Proyek ini memiliki 2 perangkat iot:
 1. Perangkat IoT Utama: sebagai perngirim sinyal inframerah ke AC dari sistem web. terdapat dua ir led yang terpasang pada perangkat utama karena salah satu tujuannya ingin melakukan kontrol pada dua AC dalam satu sistem web.
 2. Perangkat IoT Pendukung: sebagai penangkap sinyal inframerah dari AC dalam bentuk raw code. Setelah data raw code didapatkan, data bisa digunakan di dalam firmware perangkat IoT utama.
