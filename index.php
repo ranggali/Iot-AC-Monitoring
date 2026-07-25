@@ -42,7 +42,7 @@ if (isset($_SESSION['user_id'])) {
 
     <div class="brand">
       <div class="brand-dot"></div>
-      <span class="brand-name">AcController</span>
+      <span class="brand-name">Login AcController</span>
     </div>
 
     <h1>Selamat Datang</h1>
