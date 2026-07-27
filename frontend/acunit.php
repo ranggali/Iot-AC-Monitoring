@@ -237,10 +237,10 @@
                     <div class="temp-control">
                         <div class="temp-display" id="tempDisplay">22°C</div>
                         <div class="temp-buttons">
-                            <button class="temp-btn" onclick="decreaseTemp()">
+                            <button class="temp-btn" id="decreaseTempBtn" onclick="decreaseTemp()">
                                 <i class="fas fa-minus"></i>
                             </button>
-                            <button class="temp-btn" onclick="increaseTemp()">
+                            <button class="temp-btn" id="increaseTempBtn" onclick="increaseTemp()">
                                 <i class="fas fa-plus"></i>
                             </button>
                         </div>
@@ -566,6 +566,10 @@
         // TEMPERATURE
         // =============================================
         function increaseTemp() {
+            if (!isPowerOn) {
+                showErrorMessage('AC sedang dalam keadaan mati, hidupkan untuk merubah suhu.');
+                return;
+            }
             if (currentTemp < 30) {
                 currentTemp++;
                 document.getElementById('tempDisplay').textContent = currentTemp + '°C';
@@ -573,6 +577,10 @@
         }
 
         function decreaseTemp() {
+            if (!isPowerOn) {
+                showErrorMessage('AC sedang dalam keadaan mati, hidupkan untuk merubah suhu.');
+                return;
+            }
             if (currentTemp > 16) {
                 currentTemp--;
                 document.getElementById('tempDisplay').textContent = currentTemp + '°C';
@@ -593,6 +601,18 @@
             hint.textContent  = on ? 'Ketuk untuk matikan' : 'Ketuk untuk hidupkan';
             badge.textContent = on ? 'Active' : 'Inactive';
             badge.className   = 'status-badge ' + (on ? 'active' : 'inactive');
+
+            // Kunci visual tombol suhu (+/-) saat AC mati.
+            // Sengaja TIDAK memakai disabled/pointer-events:none, supaya klik
+            // tetap tertangkap oleh increaseTemp()/decreaseTemp() dan
+            // memunculkan pesan error alih-alih diam saja.
+            const decBtn = document.getElementById('decreaseTempBtn');
+            const incBtn = document.getElementById('increaseTempBtn');
+            [decBtn, incBtn].forEach(b => {
+                if (!b) return;
+                b.style.opacity = on ? '1'   : '0.4';
+                b.style.cursor  = on ? 'pointer' : 'not-allowed';
+            });
         }
 
         async function togglePower() {
@@ -693,6 +713,10 @@
             }
             if (sched.enabled && sched.days.length === 0) {
                 showErrorMessage('Jadwal aktif: pilih minimal satu hari!');
+                return;
+            }
+            if (!isPowerOn && currentTemp !== activeAc.target_temp) {
+                showErrorMessage('Perubahan suhu tidak dapat dilakukan, AC sedang mati.');
                 return;
             }
 
