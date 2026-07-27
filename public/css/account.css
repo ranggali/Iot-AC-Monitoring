@@ -494,6 +494,37 @@
             box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
         }
 
+        /* Field Error & Success Messages - hidden by default */
+        .field-error,
+        .field-success {
+            display: none;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+
+        .field-error.show,
+        .field-success.show {
+            display: flex;
+        }
+
+        .field-error {
+            color: #ef4444;
+        }
+
+        .field-success {
+            color: #22c55e;
+        }
+
+        .input-error {
+            border-color: #ef4444 !important;
+        }
+
+        .input-success {
+            border-color: #22c55e !important;
+        }
+
         /* Mobile Responsive */
        @media (max-width: 768px) {
 
