@@ -772,15 +772,28 @@
                 if (schedResult.status !== 'success') throw new Error(schedResult.message);
 
                 // Update local data
+                const updatedSchedule = {
+                    id_schedules : activeAc.schedule?.id_schedules ?? null,
+                    on_hour      : onHour,  on_minute  : onMin,
+                    off_hour     : offHour, off_minute : offMin,
+                    mon: sched.days.includes(1), tue: sched.days.includes(2),
+                    wed: sched.days.includes(3), thu: sched.days.includes(4),
+                    fri: sched.days.includes(5), sat: sched.days.includes(6),
+                    sun: sched.days.includes(0),
+                    is_active: sched.enabled,
+                };
+
                 const row = allAcUnits.find(a => a.id_ac_units === activeAc.id_ac_units);
                 if (row) {
                     row.ac_name        = acName;
                     row.ac_location    = acLocation;
                     row.target_temp    = currentTemp;
                     row.temp_threshold = parseFloat(document.getElementById('modalTempThreshold').value);
+                    row.schedule       = updatedSchedule;
                 }
                 activeAc.target_temp    = currentTemp;
                 activeAc.temp_threshold = parseFloat(document.getElementById('modalTempThreshold').value);
+                activeAc.schedule       = updatedSchedule;
                 renderTable(allAcUnits);
 
                 showSuccessMessage('Semua perubahan berhasil disimpan.');
