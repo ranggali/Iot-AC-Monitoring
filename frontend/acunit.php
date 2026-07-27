@@ -752,6 +752,7 @@
                 const [offHour, offMin] = sched.offTime.split(':').map(Number);
                 const schedPayload = {
                     ac_unit_id : activeAc.id_ac_units,
+                    enabled    : sched.enabled,
                     on_hour    : onHour,  on_minute  : onMin,
                     off_hour   : offHour, off_minute : offMin,
                     mon: sched.days.includes(1) ? 1 : 0,
@@ -922,8 +923,9 @@
                 mon: 1, tue: 1, wed: 1, thu: 1, fri: 1, sat: 0, sun: 0
             };
 
-            // Jadwal ada di DB jika ada baris schedule (sched tidak null)
-            const enabled = !!sched;
+            // Status aktif/nonaktif jadwal diambil dari kolom is_active.
+            // Jika belum pernah ada baris schedule sama sekali, default nonaktif.
+            const enabled = sched ? !!sched.is_active : false;
 
             document.getElementById('schedOnTime').value  = String(s.on_hour).padStart(2,'0')  + ':' + String(s.on_minute).padStart(2,'0');
             document.getElementById('schedOffTime').value = String(s.off_hour).padStart(2,'0') + ':' + String(s.off_minute).padStart(2,'0');
