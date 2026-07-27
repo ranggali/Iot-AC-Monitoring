@@ -35,8 +35,7 @@ $thu      = (int) ($data['thu']        ?? 0);
 $fri      = (int) ($data['fri']        ?? 0);
 $sat      = (int) ($data['sat']        ?? 0);
 $sun      = (int) ($data['sun']        ?? 0);
-// FIX: is_active dihapus dari variabel karena kolom tidak ada di tabel schedules
-// Jika ingin menggunakan is_active, tambahkan kolom dulu ke tabel (lihat SQL di bawah)
+$isActive = isset($data['enabled']) ? (int) (bool) $data['enabled'] : 1;
 
 if (!$acUnitId) {
     http_response_code(400);
@@ -54,9 +53,9 @@ try {
 
     if ($existing) {
         // UPDATE jadwal yang sudah ada
-        // FIX: Hapus is_active dari query UPDATE karena kolom tidak ada di tabel
         $stmt = $pdo->prepare("
             UPDATE schedules SET
+                is_active  = :is_active,
                 on_hour    = :on_hour,
                 on_minute  = :on_minute,
                 off_hour   = :off_hour,
@@ -75,6 +74,7 @@ try {
 
         $stmt->execute([
             ':ac_unit_id' => $acUnitId,
+            ':is_active'  => $isActive,
             ':on_hour'    => $onHour,
             ':on_minute'  => $onMin,
             ':off_hour'   => $offHour,
@@ -91,20 +91,19 @@ try {
 
     } else {
         // INSERT jadwal baru
-        // FIX: Hapus is_active dari query INSERT karena kolom tidak ada di tabel
-        // FIX: user_id di-bind langsung di array execute (bukan pakai bindValue terpisah)
         $stmt = $pdo->prepare("
             INSERT INTO schedules
-                (ac_unit_id, user_id, on_hour, on_minute, off_hour, off_minute,
+                (ac_unit_id, user_id, is_active, on_hour, on_minute, off_hour, off_minute,
                  mon, tue, wed, thu, fri, sat, sun, update_by, update_at)
             VALUES
-                (:ac_unit_id, :user_id, :on_hour, :on_minute, :off_hour, :off_minute,
+                (:ac_unit_id, :user_id, :is_active, :on_hour, :on_minute, :off_hour, :off_minute,
                  :mon, :tue, :wed, :thu, :fri, :sat, :sun, :update_by, NOW())
         ");
 
         $stmt->execute([
             ':ac_unit_id' => $acUnitId,
-            ':user_id'    => $_SESSION['user_id'],  // FIX: pindah ke sini agar tidak konflik
+            ':user_id'    => $_SESSION['user_id'],
+            ':is_active'  => $isActive,
             ':on_hour'    => $onHour,
             ':on_minute'  => $onMin,
             ':off_hour'   => $offHour,
