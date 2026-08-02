@@ -293,7 +293,7 @@
         // =============================================
         async function loadDevices() {
             try {
-                const response = await fet'../backend/device/get_device.php';
+                const response = await fetch('../backend/device/get_device.php');
                 const result   = await response.json();
                 if (result.status === 'success') {
                     allDevices = result.data;
@@ -469,7 +469,7 @@
                 formData.append('id_devices',  activeDevice.id_devices);
                 formData.append('device_name', newName);
 
-                const response = await fet'../backend/device/update_device.php', { method: 'POST', body: formData });
+                const response = await fetch('../backend/device/update_device.php', { method: 'POST', body: formData });
                 const result   = await response.json();
 
                 if (result.status === 'success') {
@@ -509,7 +509,7 @@
 
             // Fetch AC yang belum terhubung
             try {
-                const response = await fet'../backend/device/get_unattached_acunit.php');
+                const response = await fetch('../backend/device/get_unattached_acunit.php');
                 const result   = await response.json();
 
                 const select  = document.getElementById('newAcSelect');
@@ -578,7 +578,7 @@
                 formData.append('ac_unit_id', selectedId);
                 formData.append('device_id',  activeDevice.id_devices);
 
-                const response = await fet'../backend/device/attach_acunit.php', { method: 'POST', body: formData });
+                const response = await fetch('../backend/device/attach_acunit.php', { method: 'POST', body: formData });
                 const result   = await response.json();
 
                 if (result.status === 'success') {
@@ -613,7 +613,7 @@
                 const formData = new FormData();
                 formData.append('ac_unit_id', acUnitId);
 
-                const response = await fet'../backend/device/detach_acunit.php', { method: 'POST', body: formData });
+                const response = await fetch('../backend/device/detach_acunit.php', { method: 'POST', body: formData });
                 const result   = await response.json();
 
                 if (result.status === 'success') {
